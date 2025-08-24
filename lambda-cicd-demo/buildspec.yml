@@ -6,13 +6,16 @@ phases:
       python: 3.11
     commands:
       - echo "Installing dependencies..."
+      - ls -l   # Debug: confirm requirements.txt exists
       - pip install -r requirements.txt -t package/
   build:
     commands:
       - echo "Packaging Lambda function..."
-      - cp -r lambda_function.py package/
+      - cp lambda_function.py package/
       - cd package
       - zip -r ../lambda_package.zip .
+      - cd ..
+      - ls -l   # Debug: confirm lambda_package.zip exists
 artifacts:
   files:
     - lambda_package.zip
