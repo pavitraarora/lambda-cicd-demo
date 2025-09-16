@@ -5,20 +5,21 @@ phases:
     runtime-versions:
       python: 3.11
     commands:
-      - echo "Upgrading pip and setuptools..."
+      - echo "Upgrading pip, setuptools, and wheel..."
       - python -m pip install --upgrade pip setuptools wheel
-      - echo "Listing current directory for debug..."
+      - echo "Debug: Current working directory and folder structure"
+      - pwd
       - ls -R
       - echo "Cleaning and creating package folder..."
       - rm -rf package
       - mkdir -p package
-      - echo "Installing dependencies..."
-      - pip install -r lambda-cics-demo/requirements.txt -t package/
+      - echo "Installing dependencies from requirements.txt"
+      - pip install -r $CODEBUILD_SRC_DIR/lambda-cics-demo/requirements.txt -t package/
 
   build:
     commands:
       - echo "Packaging Lambda function..."
-      - cp lambda-cics-demo/lambda_function.py package/
+      - cp $CODEBUILD_SRC_DIR/lambda-cics-demo/lambda_function.py package/
       - cd package
       - zip -r ../lambda_package.zip .
       - cd ..
