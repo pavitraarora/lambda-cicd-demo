@@ -7,18 +7,23 @@ phases:
     commands:
       - echo "Upgrading pip and setuptools..."
       - python -m pip install --upgrade pip setuptools wheel
-      - echo "Installing dependencies..."
-      - ls -l   # Debug: confirm requirements.txt exists
+      - echo "Listing current directory for debug..."
+      - ls -R
+      - echo "Cleaning and creating package folder..."
+      - rm -rf package
       - mkdir -p package
-      - pip install -r requirements.txt -t package/
+      - echo "Installing dependencies..."
+      - pip install -r lambda-cics-demo/requirements.txt -t package/
+
   build:
     commands:
       - echo "Packaging Lambda function..."
-      - cp lambda_function.py package/
+      - cp lambda-cics-demo/lambda_function.py package/
       - cd package
       - zip -r ../lambda_package.zip .
       - cd ..
-      - ls -l   # Debug: confirm lambda_package.zip exists
+      - echo "Listing build artifacts..."
+      - ls -l
 
 artifacts:
   files:
