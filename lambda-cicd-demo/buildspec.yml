@@ -15,12 +15,12 @@ phases:
       - "rm -rf package"
       - "mkdir -p package"
       - "echo Installing dependencies from requirements.txt"
-      - "pip install -r $CODEBUILD_SRC_DIR/lambda-cics-demo/requirements.txt -t package/"
+      - "pip install -r $CODEBUILD_SRC_DIR/lambda-cicd-demo/requirements.txt -t package/"
 
   build:
     commands:
       - "echo Packaging Lambda function..."
-      - "cp $CODEBUILD_SRC_DIR/lambda-cics-demo/lambda_function.py package/"
+      - "cp $CODEBUILD_SRC_DIR/lambda-cicd-demo/lambda_function.py package/"
       - "cd package"
       - "zip -r ../lambda_package.zip ."
       - "cd .."
