@@ -7,18 +7,20 @@ phases:
     commands:
       - echo "Installing dependencies for $LAMBDA_FOLDER..."
       - python -m pip install --upgrade pip setuptools wheel
-      - mkdir -p package
-      - pip install -r $CODEBUILD_SRC_DIR/$LAMBDA_FOLDER/requirements.txt -t package/
+      - mkdir -p build/dependencies
+      - pip install -r $CODEBUILD_SRC_DIR/$LAMBDA_FOLDER/requirements.txt -t build/dependencies
 
   build:
     commands:
       - echo "Packaging Lambda function from $LAMBDA_FOLDER..."
-      - cp $CODEBUILD_SRC_DIR/$LAMBDA_FOLDER/lambda_function.py package/
-      - cd package
-      - zip -r ../lambda_package.zip .
-      - cd ..
-      - echo "Build artifact ready:"
-      - ls -l
+      - mkdir -p build/code
+      - cp $CODEBUILD_SRC_DIR/$LAMBDA_FOLDER/*.py build/code/
+      - cp -r build/dependencies/* build/code/
+      - cd build/code
+      - zip -r ../../lambda_package.zip .
+      - cd ../..
+      - echo "ZIP contents:"
+      - unzip -l lambda_package.zip
 
 artifacts:
   files:
