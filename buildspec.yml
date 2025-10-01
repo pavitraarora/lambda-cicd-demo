@@ -5,6 +5,14 @@ phases:
     runtime-versions:
       python: 3.11
     commands:
+      # ----------------------------------------------------------------------
+      # 🔍 DEBUG ADDITION: Show the file structure upon checkout
+      - echo "--- DEBUG START: Listing contents of the current directory (project root) ---"
+      - ls -F
+      - echo "--- DEBUG: Listing contents of the source directory (Recursive) ---"
+      - ls -RF $CODEBUILD_SRC_DIR/
+      - echo "--- DEBUG END ---"
+      # ----------------------------------------------------------------------
       - echo "Installing dependencies for BusinessRuleExtractorSmallCodes..."
       - python -m pip install --upgrade pip setuptools wheel
       # Create a folder for dependencies
@@ -17,8 +25,17 @@ phases:
       - echo "Packaging Lambda function..."
       # Create folder for code + dependencies
       - mkdir -p build/code
+      
+      # ----------------------------------------------------------------------
+      # 🔍 DEBUG ADDITION: Verify the existence of the specific file before copying
+      - echo "--- DEBUG: Verifying path for lambda_function.py ---"
+      - if [ -f $CODEBUILD_SRC_DIR/BusinessRuleExtractorSmallCodes/lambda_function.py ]; then echo "SUCCESS: lambda_function.py found at expected path."; else echo "FAILURE: lambda_function.py NOT found at expected path."; exit 1; fi
+      - echo "--- DEBUG END ---"
+      # ----------------------------------------------------------------------
+      
       # Copy the lambda_function.py to build/code
       - cp $CODEBUILD_SRC_DIR/BusinessRuleExtractorSmallCodes/lambda_function.py build/code/
+      
       # Copy all installed dependencies
       - cp -r build/dependencies/* build/code/
       # Move to the folder and zip everything so that lambda_function.py is at root
