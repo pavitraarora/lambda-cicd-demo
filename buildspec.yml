@@ -5,8 +5,7 @@ phases:
     runtime-versions:
       python: 3.11
     commands:
-      # ----------------------------------------------------------------------
-      # 🔍 DEBUG ADDITION: Show the file structure upon checkout
+      # --- DEBUG START: Listing contents of the current directory (project root) ---
       - echo "--- DEBUG START: Listing contents of the current directory (project root) ---"
       - ls -F
       - echo "--- DEBUG: Listing contents of the source directory (Recursive) ---"
