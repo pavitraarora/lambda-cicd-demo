@@ -5,7 +5,7 @@ phases:
     runtime-versions:
       python: 3.11
     commands:
-      - echo "Installing dependencies for BusinessRuleExtractorSmallCodes..."
+      - echo "Installing dependencies..."
       - python -m pip install --upgrade pip setuptools wheel
       - mkdir -p build/dependencies
       - pip install -r $CODEBUILD_SRC_DIR/BusinessRuleExtractorSmallCodes/requirements.txt -t build/dependencies
@@ -21,10 +21,8 @@ phases:
       - cd ../..
       - echo "ZIP contents:"
       - unzip -l lambda_package.zip
-
-      # 🔹 Validate lambda_function.py is at root (one-line if)
       - echo "Validating zip structure..."
-      - unzip -l lambda_package.zip | awk '{print $4}' | grep -qx 'lambda_function.py' || (echo "❌ ERROR: lambda_function.py is NOT at root of zip" && exit 1)
+      - unzip -l lambda_package.zip | awk '{print $4}' | grep -qx 'lambda_function.py' || (echo "❌ ERROR: lambda_function.py is NOT at root" && exit 1)
       - echo "✅ lambda_function.py is at root"
 
 artifacts:
