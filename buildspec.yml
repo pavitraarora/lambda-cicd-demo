@@ -5,16 +5,16 @@ phases:
     runtime-versions:
       python: 3.11
     commands:
-      - echo "Installing dependencies for $LAMBDA_FOLDER..."
+      - echo "Installing dependencies for BusinessRuleExtractorSmallCodes..."
       - python -m pip install --upgrade pip setuptools wheel
       - mkdir -p build/dependencies
-      - pip install -r $CODEBUILD_SRC_DIR/$LAMBDA_FOLDER/requirements.txt -t build/dependencies
+      - pip install -r $CODEBUILD_SRC_DIR/BusinessRuleExtractorSmallCodes/requirements.txt -t build/dependencies
 
   build:
     commands:
-      - echo "Packaging Lambda function from $LAMBDA_FOLDER..."
+      - echo "Packaging Lambda function from BusinessRuleExtractorSmallCodes..."
       - mkdir -p build/code
-      - cp $CODEBUILD_SRC_DIR/$LAMBDA_FOLDER/*.py build/code/
+      - cp $CODEBUILD_SRC_DIR/BusinessRuleExtractorSmallCodes/lambda_function.py build/code/
       - cp -r build/dependencies/* build/code/
       - cd build/code
       - zip -r ../../lambda_package.zip .
