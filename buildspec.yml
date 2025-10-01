@@ -22,7 +22,8 @@ phases:
       - echo "ZIP contents:"
       - unzip -l lambda_package.zip
       - echo "Validating zip structure..."
-      - ./scripts/validate_zip.sh
+      # Call the script with bash explicitly to avoid executable issues
+      - bash ./scripts/validate_zip.sh
 
 artifacts:
   files:
