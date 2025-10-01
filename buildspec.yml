@@ -22,6 +22,7 @@ phases:
       - echo "ZIP contents:"
       - unzip -l lambda_package.zip
       - echo "Validating zip structure..."
+      # Single-line validation command (YAML-safe)
       - unzip -l lambda_package.zip | awk '{print $4}' | grep -qx 'lambda_function.py' || (echo "❌ ERROR: lambda_function.py is NOT at root" && exit 1)
       - echo "✅ lambda_function.py is at root"
 
