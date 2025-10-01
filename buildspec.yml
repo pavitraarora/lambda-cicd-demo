@@ -5,33 +5,18 @@ phases:
     runtime-versions:
       python: 3.11
     commands:
-      - echo "DEBUG: Listing contents of project root"
-      - ls -F
-      - echo "DEBUG: Listing contents of source directory (Recursive)"
-      - ls -RF $CODEBUILD_SRC_DIR/
-      - echo "DEBUG: End of listing"
-
-      - echo "Installing dependencies for BusinessRuleExtractorSmallCodes"
       - python -m pip install --upgrade pip setuptools wheel
       - mkdir -p build/dependencies
       - pip install -r $CODEBUILD_SRC_DIR/BusinessRuleExtractorSmallCodes/requirements.txt -t build/dependencies
 
   build:
     commands:
-      - echo "Packaging Lambda function"
       - mkdir -p build/code
-
-      - echo "Verifying path for lambda_function.py"
-      - if [ -f $CODEBUILD_SRC_DIR/BusinessRuleExtractorSmallCodes/lambda_function.py ]; then echo "SUCCESS: lambda_function.py found"; else echo "FAILURE: lambda_function.py NOT found"; exit 1; fi
-
       - cp $CODEBUILD_SRC_DIR/BusinessRuleExtractorSmallCodes/lambda_function.py build/code/
       - cp -r build/dependencies/* build/code/
-
       - cd build/code
       - zip -r ../../lambda_package.zip .
       - cd ../..
-      - echo "ZIP contents:"
-      - unzip -l lambda_package.zip
 
 artifacts:
   files:
