@@ -22,13 +22,10 @@ phases:
       - echo "ZIP contents:"
       - unzip -l lambda_package.zip
 
-      # 🔹 Validate lambda_function.py is at root
+      # 🔹 Validate lambda_function.py is at root (one-line if)
       - echo "Validating zip structure..."
-      - if unzip -l lambda_package.zip | awk '{print $4}' | grep -qx 'lambda_function.py'; then
-          echo "✅ lambda_function.py is at root";
-        else
-          echo "❌ ERROR: lambda_function.py is NOT at root of zip"; exit 1;
-        fi
+      - unzip -l lambda_package.zip | awk '{print $4}' | grep -qx 'lambda_function.py' || (echo "❌ ERROR: lambda_function.py is NOT at root of zip" && exit 1)
+      - echo "✅ lambda_function.py is at root"
 
 artifacts:
   files:
