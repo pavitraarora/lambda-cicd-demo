@@ -7,15 +7,21 @@ phases:
     commands:
       - echo "Installing dependencies for BusinessRuleExtractorSmallCodes..."
       - python -m pip install --upgrade pip setuptools wheel
+      # Create a folder for dependencies
       - mkdir -p build/dependencies
+      # Install dependencies here
       - pip install -r $CODEBUILD_SRC_DIR/BusinessRuleExtractorSmallCodes/requirements.txt -t build/dependencies
 
   build:
     commands:
-      - echo "Packaging Lambda function from BusinessRuleExtractorSmallCodes..."
+      - echo "Packaging Lambda function..."
+      # Create folder for code + dependencies
       - mkdir -p build/code
+      # Copy the lambda_function.py to build/code
       - cp $CODEBUILD_SRC_DIR/BusinessRuleExtractorSmallCodes/lambda_function.py build/code/
+      # Copy all installed dependencies
       - cp -r build/dependencies/* build/code/
+      # Move to the folder and zip everything so that lambda_function.py is at root
       - cd build/code
       - zip -r ../../lambda_package.zip .
       - cd ../..
