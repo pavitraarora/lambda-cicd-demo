@@ -18,7 +18,7 @@ phases:
       - ls -l $CODEBUILD_SRC_DIR
       - echo "DEBUG: Listing contents of $CODEBUILD_SRC_DIR/BusinessRuleExtractorSmallCodes"
       - ls -l $CODEBUILD_SRC_DIR/BusinessRuleExtractorSmallCodes
-      # copy statements
+    
       - cp $CODEBUILD_SRC_DIR/BusinessRuleExtractorSmallCodes/lambda_function.py build/code/
       - cp -r build/dependencies/* build/code/
       - cd build/code
@@ -27,7 +27,7 @@ phases:
       - echo "ZIP contents:"
       - unzip -l lambda_package.zip
       - echo "Validating zip structure..."
-      # Call the script with bash explicitly to avoid executable issues
+      
       - bash ./scripts/validate_zip.sh
 
 artifacts:
