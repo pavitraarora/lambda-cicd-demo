@@ -12,7 +12,7 @@ phases:
 
   build:
     commands:
-      - echo "Packaging Lambda function..."
+      - echo "Packaging Lambda function......."
       - mkdir -p build/code
       - echo "DEBUG: Listing contents of $CODEBUILD_SRC_DIR"
       - ls -l $CODEBUILD_SRC_DIR
