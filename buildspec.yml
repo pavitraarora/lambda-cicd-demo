@@ -5,11 +5,13 @@ phases:
     runtime-versions:
       python: 3.11
     commands:
+      # Debug: list current directory
       - echo "--- DEBUG START: Current directory listing ---"
       - ls -F
       - echo "--- DEBUG: Recursive source directory listing ---"
       - ls -RF $CODEBUILD_SRC_DIR/
       - echo "--- DEBUG END ---"
+      
       - echo "Installing dependencies for BusinessRuleExtractorSmallCodes..."
       - python -m pip install --upgrade pip setuptools wheel
       - mkdir -p build/dependencies
@@ -19,14 +21,20 @@ phases:
     commands:
       - echo "Packaging Lambda function..."
       - mkdir -p build/code
-      - echo "--- DEBUG: Verifying lambda_function.py path ---"
-      - if [ -f $CODEBUILD_SRC_DIR/BusinessRuleExtractorSmallCodes/lambda_function.py ]; then echo "SUCCESS: lambda_function.py found."; else echo "FAILURE: lambda_function.py NOT found. Exiting."; exit 1; fi
-      - echo "--- DEBUG END ---"
+
+      # Debug: check if lambda_function.py exists
+      - "if [ -f $CODEBUILD_SRC_DIR/BusinessRuleExtractorSmallCodes/lambda_function.py ]; then echo 'SUCCESS: lambda_function.py found.'; else echo 'FAILURE: lambda_function.py NOT found. Exiting.'; exit 1; fi"
+
+      # Copy Lambda and dependencies
       - cp $CODEBUILD_SRC_DIR/BusinessRuleExtractorSmallCodes/lambda_function.py build/code/
       - cp -r build/dependencies/* build/code/
+
+      # Package into zip
       - cd build/code
       - zip -r ../../lambda_package.zip .
       - cd ../..
+      
+      # Show zip contents
       - echo "ZIP contents:"
       - unzip -l lambda_package.zip
       - echo "Validation complete: lambda_function.py should be at root of zip."
