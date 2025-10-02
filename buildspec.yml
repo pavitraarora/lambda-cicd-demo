@@ -22,7 +22,7 @@ phases:
       - cd ../..
       - echo "ZIP contents:"
       - unzip -l lambda_package.zip
-      - echo "Validation complete: lambda_function.py should be at root of zip."
+      - "echo 'Validation complete: lambda_function.py should be at root of zip.'"
 
 artifacts:
   files:
