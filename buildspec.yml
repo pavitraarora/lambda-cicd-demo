@@ -5,13 +5,11 @@ phases:
     runtime-versions:
       python: 3.11
     commands:
-      # Debug commands to check directory structure
       - echo "--- DEBUG START: Current directory listing ---"
       - ls -F
       - echo "--- DEBUG: Recursive source directory listing ---"
       - ls -RF $CODEBUILD_SRC_DIR/
       - echo "--- DEBUG END ---"
-      
       - echo "Installing dependencies for BusinessRuleExtractorSmallCodes..."
       - python -m pip install --upgrade pip setuptools wheel
       - mkdir -p build/dependencies
@@ -19,15 +17,11 @@ phases:
 
   build:
     commands:
-      - echo "Packaging Lambda function......."
+      - echo "Packaging Lambda function..."
       - mkdir -p build/code
-      
-      # Debug to verify file existence
-      - echo "--- DEBUG: Verifying path for lambda_function.py ---"
+      - echo "--- DEBUG: Verifying lambda_function.py path ---"
       - if [ -f $CODEBUILD_SRC_DIR/BusinessRuleExtractorSmallCodes/lambda_function.py ]; then echo "SUCCESS: lambda_function.py found."; else echo "FAILURE: lambda_function.py NOT found. Exiting."; exit 1; fi
       - echo "--- DEBUG END ---"
-      
-      # Core packaging steps
       - cp $CODEBUILD_SRC_DIR/BusinessRuleExtractorSmallCodes/lambda_function.py build/code/
       - cp -r build/dependencies/* build/code/
       - cd build/code
@@ -35,6 +29,7 @@ phases:
       - cd ../..
       - echo "ZIP contents:"
       - unzip -l lambda_package.zip
+      - echo "Validation complete: lambda_function.py should be at root of zip."
 
 artifacts:
   files:
